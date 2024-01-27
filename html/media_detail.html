@@ -1,0 +1,109 @@
+{% extends './base.html' %}
+
+{% block navbar %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="media_analysis"
+         style="background-color: {{ theme.secondary_background }};
+                 color: {{ theme.text_color }}">
+        <b>Media Chart:</b>
+        <a href="https://grafana.erona.xyz/d/M-XctMNIk/media?orgId=1&var-input_media={{ media_pk }}"
+            style="font-size:30px">
+            &#128202;
+        </a>
+    </div>
+
+    <div class="media_analysis"
+         style="background-color: {{ theme.secondary_background }};
+                 color: {{ theme.text_color }}">
+    {% if categorized_description %}
+        <p>
+            <b>Summary:</b>
+            {{ categorized_description }}
+        </p>
+    {% else %}
+        <p>ChatGPT failed to provide a description as prompted.</p>
+    {% endif %}
+    </div>
+
+    {% if openai_comments_analysis %}
+        {% if facial_analysis %}
+            <div class="media_analysis"
+                 style="background-color: {{ theme.secondary_background }};
+                         color: {{ theme.text_color }}">
+                <b>Facial Analysis:</b>
+                <a href="https://grafana.erona.xyz/d/NTXZHIdSk/facial-analysis-large-gauge-panel?orgId=1&var-input_media={{ media_pk }}"
+                    style="font-size:30px">
+                    &#128202;
+                </a>
+                {% for emotion in facial_analysis %}
+                    <br>{{ emotion.name }}: {{ emotion.score }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="media_analysis"
+             style="background-color: {{ theme.secondary_background }};
+                     color: {{ theme.text_color }}">
+            <p>
+                <b>Comment Analysis: </b>
+                {{ openai_comments_analysis }}
+            </p>
+        </div>
+    {% else %}
+        <p>No analysis found.</p>
+    {% endif %}
+
+{#    {% if media_liker_list %}#}
+{#        <p>#}
+{#            Media liked by:#}
+{#            <ul>#}
+{#            {% for media_liker in media_liker_list %}#}
+{#                <li>#}
+{#                    <div>#}
+{#                        <b>user: </b>{{ media_liker.user_name }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>name: </b>{{ media_liker.full_name }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>profile pic: </b>{{ media_liker.profile_pic_url }}#}
+{#                    </div>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#            </ul>#}
+{#        </p>#}
+{#    {% else %}#}
+{#        <p>No media likers found.</p>#}
+{#    {% endif %}#}
+{##}
+{#    {% if media_comment_list %}#}
+{#        <p>#}
+{#            Media comments:#}
+{#            <ul>#}
+{#            {% for media_comment in media_comment_list %}#}
+{#                <li>#}
+{#                    <div>#}
+{#                        <b>user: </b>{{ media_comment.user.user_name }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>text: </b>{{ media_comment.text }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>content type: </b>{{ media_comment.content_type }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>status: </b>{{ media_comment.status }}#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <b>likes: </b>{{ media_comment.like_count }}#}
+{#                    </div>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#            </ul>#}
+{#        </p>#}
+{#    {% else %}#}
+{#        <p>No media comments found.</p>#}
+{#    {% endif %}#}
+{% endblock %}

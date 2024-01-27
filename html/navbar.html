@@ -1,0 +1,57 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'insta/styles.css' %}">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let media_textbox = document.getElementById('media_input');
+        let media_link = document.getElementById('media_link');
+        let account_textbox = document.getElementById('account_input');
+        let account_link = document.getElementById('account_link');
+
+        media_textbox.addEventListener('input', function () {
+            if (media_textbox.value.length > 0) {
+                media_link.href = window.location.origin + '/media/' + encodeURIComponent(media_textbox.value);
+                media_link.style.visibility = "visible";
+            }
+            else {
+                media_link.style.visibility = "hidden";
+            }
+        });
+        account_textbox.addEventListener('input', function () {
+            if (account_textbox.value.length > 0) {
+                account_link.href = window.location.origin + '/account/' + encodeURIComponent(account_textbox.value);
+                account_link.style.visibility = "visible";
+            }
+            else {
+                account_link.style.visibility = "hidden";
+            }
+        })
+    });
+</script>
+<nav>
+    <div class="navbar"
+         style="background-color: {{ theme.navbar_background }};
+                 color: {{ theme.text_color }}">
+        <div style="flex: 2"></div>
+        <div style="flex: 1"><a style="color: {{ theme.secondary_text_color }}" href="{% url 'index' %}">Home</a></div>
+        <div style="display: flex">
+            <form method="post" action="{% url 'account_detail' user_name='0' %}">
+                {% csrf_token %}
+                {{ form }}
+                <label for="account_input" style="color: {{ theme.secondary_text_color }}">Account:</label>
+                <input type="text" id="account_input"/>
+            </form>
+            <a href="#" id="account_link" style="visibility: hidden">&#128064</a>
+        </div>
+        <div style="display: flex">
+            <form method="post" action="{% url 'media_detail' media_pk='0' %}">
+                {% csrf_token %}
+                {{ form }}
+                <label for="media_input" style="color: {{ theme.secondary_text_color }}">Media:</label>
+                <input type="text" id="media_input"/>
+            </form>
+            <a href="#" id="media_link" style="visibility: hidden">&#128064</a>
+        </div>
+        <div style="flex: 2"></div>
+    </div>
+</nav>

@@ -1,0 +1,212 @@
+{% extends './base.html' %}
+
+{% block navbar %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="account_media"
+         style="background-color: {{ theme.secondary_background }};
+                 color: {{ theme.text_color }}">
+        <b>Media Chart:</b>
+        <a href="https://grafana.erona.xyz/d/ydyhW-NIz/user?orgId=1&var-input_user={{ user.user_name }}"
+            style="font-size:30px">
+            &#128202;
+        </a>
+
+        {% if user %}
+        <p>
+            <div>
+                <b>tag: </b>{{ user.user_name }}
+            </div>
+            <div>
+                <b>full name: </b>{{ user.full_name }}
+            </div>
+            <div>
+                <b>follower count: </b>{{ user.follower_count }}
+            </div>
+            <div>
+                <b>following count: </b>{{ user.following_count }}
+            </div>
+            <a href="{{ user.profile_pic_url }}">
+                profile pic
+            </a>
+        </p>
+    {% else %}
+        <p>No user found.</p>
+    {% endif %}
+    </div>
+
+    <div>
+    {% if media_list %}
+        <p>
+            Latest posts by user:
+            <div>
+                {% for media in media_list %}
+                    <div class="account_media"
+                         style="background-color: {{ theme.secondary_background }};
+                                 color: {{ theme.text_color }}">
+                        <div>
+                            <b>media: </b>
+                            <a href="../../media/{{ media.media_id }}/">{{ media.media_id }}</a>
+                        </div>
+                        {% if media.thumbnail_url %}
+                            <a href="{{ media.thumbnail_url }}">
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    thumbnail (no caption)
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div>
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    no media, no caption
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if media.video_url %}
+                            <div>
+                                <a href="{{ media.video_url }}">
+                                    video
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                no video
+                            </div>
+                        {% endif %}
+                        {% if media.openai_comments_description %}
+                            <div>
+                                OPENAI Comment Summary: {{ media.openai_comments_description }}
+                            </div>
+                        {% endif %}
+                        {% if media.google_vision_image_description %}
+                            <div>
+                                Google Vision Image Analysis: {{ media.google_vision_image_description }}
+                            </div>
+                        {% endif %}
+                        {% if media.image_description %}
+                            <div>
+                                Facial Analysis: {{ media.image_description }}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div>
+                                <b>comments: </b>{{ media.comment_count }}
+                            </div>
+                            <div>
+                                <b>likes: </b>{{ media.like_count }}
+                            </div>
+                            <div>
+                                <b>timestamp: </b>{{ media.media_datetime }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </p>
+    {% else %}
+        <p>No media found.</p>
+    {% endif %}
+    </div>
+
+    <h1 style="text-align: center">
+        Media where user is tagged or username is a hashtag:
+    </h1>
+
+    <div style="overflow-wrap: break-word; display:flex">
+        <div style="width:50%">
+        {% if top_hashtag_list %}
+            <h2 style="text-align: center">top hashtags:</h2>
+                {% for media in top_hashtag_list %}
+                    <div class="account_media"
+                         style="background-color: {{ theme.secondary_background }};
+                                 color: {{ theme.text_color }}">
+                        <div>
+                            <b>media: </b>
+                            <a href="../../media/{{ media.media_id }}/">{{ media.media_id }}</a>
+                        </div>
+                        {% if media.thumbnail_url %}
+                            <a href="{{ media.thumbnail_url }}">
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    thumbnail (no caption)
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div>
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    no media, no caption
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div>
+                                <b>comments: </b> {{ media.comment_count }}
+                            </div>
+                            <div>
+                                <b>likes: </b> {{ media.like_count }}
+                            </div>
+                            <div>
+                                <b>timestamp: </b> {{ media.media_datetime }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        {% else %}
+            <p>empty</p>
+        {% endif %}
+        </div>
+        <div style="width:50%">
+        {% if usertag_list %}
+                <h2 style="text-align: center">usertags:</h2>
+                {% for media in usertag_list %}
+                    <div class="account_media"
+                         style="background-color: {{ theme.secondary_background }};
+                                 color: {{ theme.text_color }}">
+                        <div>
+                            <b>media: </b>
+                            <a href="../../media/{{ media.media_id }}/">{{ media.media_id }}</a>
+                        </div>
+                        {% if media.thumbnail_url %}
+                            <a href="{{ media.thumbnail_url }}">
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    thumbnail (no caption)
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <div>
+                                {% if media.caption_text %}
+                                    {{ media.caption_text }}
+                                {% else %}
+                                    no media, no caption
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div>
+                                <b>comments: </b>{{ media.comment_count }}
+                            </div>
+                            <div>
+                                <b>likes: </b>{{ media.like_count }}
+                            </div>
+                            <div>
+                                <b>timestamp: </b>{{ media.media_datetime }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        {% else %}
+            <p>empty</p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
