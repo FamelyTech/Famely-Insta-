@@ -1,6 +1,6 @@
 from django.contrib import admin
-
 from .models import *
+
 
 admin.site.register(SnapshotInstagramUser)
 admin.site.register(InstagramUser)
