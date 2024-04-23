@@ -1,0 +1,16 @@
+1) log into accounts
+-jalodei.erona.xyz with user 'demo' and password 'testingThis1!'
+-grafana with user 'famelytech' and password 'UzqWOezGG6T8A;5DI?NBS?,F'
+2) after you've been redirected to the 'create jalodei user' page,
+-enter a working instagram username and password combination
+-for the proxy field, enter '185.199.229.156:7492'
+3) after you've been logged in, you should see a page with a list of loaded users (the first time you access this page it should only show the active user)
+-click on a user name to load the account page for that user
+-or enter a different user name in the account textbox at the top of the page and click on the eyes to load the page
+4) from the account page, you should see a list of media for the user
+-click on the 'media chart' icon to load a dashboard for the account
+-click on a media id to load the analysis of that media
+-or enter the media id in the media textbox to to load the analysis
+5) from the media analysis page, you should see some analysis of the post - some basic metrics, summary, facial analysis, and comment analysis
+-click on the 'media chart' icon to load a dashboard for the media
+-click on the 'facial analysis' icon to load a dashboard for the emotions on the top-left face in the image

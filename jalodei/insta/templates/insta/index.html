@@ -1,0 +1,51 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'insta/styles.css' %}">
+
+{% block navbar %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="index_header">
+        <div>
+            <b>active user</b>
+        </div>
+        <div>
+            <b>updated</b>
+        </div>
+    </div>
+    <div class="index_account" style="background-color: {{ theme.secondary_background }}">
+        <div>
+            <a href="account/{{ active_user.user_name }}/">{{ active_user.user_name }}</a>
+        </div>
+        <div>
+            {{ active_user.updated }}
+        </div>
+    </div>
+
+    {% if saved_ig_users %}
+    <div class="index_header">
+        <div>
+            <b>external user(s)</b>
+        </div>
+        <div>
+            <b>updated</b>
+        </div>
+    </div>
+    {% for ig_user in saved_ig_users %}
+    <div class="index_account" style="background-color: {{ theme.secondary_background }}">
+        <div>
+            <a href="account/{{ ig_user.user_name }}/">{{ ig_user.user_name }}</a>
+        </div>
+        <div class="index_usergroup">
+            {{  ig_user.updated }}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No saved users.</p>
+    {% endif %}
+{% endblock %}

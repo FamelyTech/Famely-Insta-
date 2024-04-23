@@ -1,0 +1,41 @@
+/*.home {*/
+/*    background: url("images/");*/
+/*}*/
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    border: solid grey 2px;
+    border-radius: 5px;
+}
+
+.navbar_link {
+    flex: 1;
+    margin: 10px 25px 10px 25px;
+}
+
+.account_media {
+    border: 2px solid black;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.index_header {
+    display: flex;
+    font-size: larger;
+    justify-content: space-around;
+}
+
+.index_account {
+    display: flex;
+    justify-content: space-around;
+    border: 2px solid black;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.media_analysis {
+    margin: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
+}

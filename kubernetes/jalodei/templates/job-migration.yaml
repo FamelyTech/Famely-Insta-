@@ -1,0 +1,87 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "django.name" . }}-migrations
+spec:
+  template:
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          command: ['bash','run.sh', '-c']
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.dbSecret }}
+                 key: username
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecret }}
+                  key: password
+            
+            - name: POSTGRES_NAME
+              value: {{ .Values.dbName | quote }}
+
+            - name: SITE
+              value: {{ .Values.site | quote }}
+
+            - name: POSTGRES_HOST
+              value: {{ include "django.name" . }}-postgres
+
+            - name: POSTGRES_PORT
+              value: {{ .Values.dbPort | quote }}
+
+            - name: PRODUCTION
+              value: {{ .Values.djprod | quote }}
+
+            - name: DELETE_DB
+              value: {{ .Values.deleteDB | quote }}
+
+            - name: NAMESPACE
+              value: {{ .Values.pullSecret.namespace | quote }}
+
+            - name: DJANGO_SECRET
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: DJANGO_SECRET
+
+            - name: DJANGO_SUPERUSER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: DJANGO_SUPERUSER_USERNAME
+
+            - name: DJANGO_SUPERUSER_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: DJANGO_SUPERUSER_EMAIL
+
+            - name: DJANGO_SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: DJANGO_SUPERUSER_PASSWORD
+           
+            - name: BRIAN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: BRIAN_USER
+            
+            - name: BRIAN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: BRIAN_PASSWORD
+      restartPolicy: OnFailure
+  backoffLimit: 3

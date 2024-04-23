@@ -1,0 +1,37 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jalodeiweb
+spec:
+  #Los entrypoints son nombrados en el service, pero declarados en el deployment
+  entryPoints:
+    - web
+  routes:
+    # Extrañamente todos los valores puestos dentro de route no deben de llevar
+    # identacion antes del -
+  - match: Host(`jalodei.erona.xyz`)
+    kind: Rule
+    services:
+      # El servicio que vas a exponer
+    - name: jalodei-stage
+      #El puerto interno
+      port: 80
+    middlewares:
+    - name: redirectscheme
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jalodeitls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jalodei.erona.xyz`)
+      kind: Rule
+      services:
+      - name: jalodei-stage
+        port: 80
+  tls:
+    certResolver: default

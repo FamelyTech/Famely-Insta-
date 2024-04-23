@@ -1,0 +1,168 @@
+# Version del api de deployment se usa.
+apiVersion: apps/v1
+# El tipo de elemento de kubernetes que creamos. Puede ser un pod, un servicio o un deployment.
+# entre otros
+kind: Deployment
+metadata:
+  # Nombre base que tendran todos los pods
+  name: {{ include "django.name" . }}
+  labels:
+{{ include "django.labels" . | indent 4 }}
+spec:
+  # Numero de containers que quieres que se lancen
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "django.name" . }}
+  template:
+    metadata:
+      labels:
+        # Tags de los pods, para poder actuar sobre ellos con servicios por ejemplo.
+        app.kubernetes.io/name: {{ include "django.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        # El name: nombre que le pondras al container, porque K8 guarda sus imagenes internamente
+        # la direccion de la imagen, de onde la bajas. este formato es para DockerHub
+        # imagePullPolicy es te puede ahorrar problemas porque a veces haces
+        # cambios pero no quieres cambiar la versión y esto te permite que se vuelve a bjaar siempre
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{  .Values.service.targetPort }}
+              protocol: TCP
+          # Variables de entorno: son muy utiles pues puedes cambiar el comportamiento
+          # de tu programa por cambiando las variables de entonro que usas.
+          # Ademas es muy seguro que esten guardadas solo en el env y no en un archivo
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.dbSecret }}
+                 key: username
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecret }}
+                  key: password
+
+            - name: POSTGRES_NAME
+              value: {{ .Values.dbName | quote }}
+
+            - name: SITE
+              value: {{ .Values.site | quote }}
+
+            - name: POSTGRES_HOST
+              value: {{ include "django.name" . }}-postgres
+
+            - name: POSTGRES_PORT
+              value: {{ .Values.dbPort | quote }}
+
+            - name: PRODUCTION
+              value: {{ .Values.djprod | quote }}
+
+            - name: DELETE_DB
+              value: {{ .Values.deleteDB | quote }}
+            
+            - name: STATICS
+              value: {{ .Values.statics | quote }}
+
+            - name: NAMESPACE
+              value: {{ .Values.pullSecret.namespace | quote }}
+
+            - name: DJANGO_SECRET
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: DJANGO_SECRET
+
+            - name: AZUREAI_ENDPOINT
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: AZUREAI_ENDPOINT
+
+            - name: AZUREAI_KEY_1
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: AZUREAI_KEY_1
+            
+            - name: AZUREAI_KEY_2
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: AZUREAI_KEY_2
+
+            - name: AZUREAI_LOCATION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: AZUREAI_LOCATION
+           
+            - name: GOOGLE_CLOUD_KEY
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: GOOGLE_CLOUD_KEY
+
+            - name: HUME_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: HUME_KEY
+           
+            - name: OPENAI_API_KEY
+              valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.miscSecrets }}
+                 key: OPENAI_API_KEY
+
+            - name: OPENAI_API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: OPENAI_API_PASSWORD
+
+            - name: OPENAI_API_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: OPENAI_API_USERNAME
+
+            - name: PROXY_1
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: PROXY_1
+
+            - name: WATSON_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: WATSON_KEY
+
+            - name: WEBSHARE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: WEBSHARE_API_KEY
+
+            - name: BRIAN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: BRIAN_USER
+
+            - name: BRIAN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.miscSecrets }}
+                  key: BRIAN_PASSWORD
