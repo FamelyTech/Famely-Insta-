@@ -1,9 +1,28 @@
-1) log into accounts
--jalodei.erona.xyz with user 'demo' and password 'testingThis1!'
--grafana with user 'famelytech' and password 'UzqWOezGG6T8A;5DI?NBS?,F'
+environment variables
+-open '.env' at the top level of the project
+***
+
+project setup
+-create a superuser with manage.py
+-runserver through manage.py and open the browser to the admin
+-create a test user
+-create a grafana account and make the dashboards
+
+proxy
+-go to webshare.io and create an account
+-locate 'API' at the bottom of the left side of the page, click on it and create an API key
+-add the API key to the environment variables as 'WEBSHARE_API_KEY'
+-locate 'PROXY LIST' near the top of the options on the left side of the page, and open it
+-pick an available proxy and port combination [proxy address(xxx.xxx.xxx.xx)]:[port(xxxx)], and save it
+
+hosting
+find a tutorial for hosting a django application and do that
+
+using the application
+1) with the test user or the super user created in the setup, log in to the landing page
 2) after you've been redirected to the 'create jalodei user' page,
 -enter a working instagram username and password combination
--for the proxy field, enter '185.199.229.156:7492'
+-for the proxy field, enter the proxy port combination from before with ':' between the proxy address and the port
 3) after you've been logged in, you should see a page with a list of loaded users (the first time you access this page it should only show the active user)
 -click on a user name to load the account page for that user
 -or enter a different user name in the account textbox at the top of the page and click on the eyes to load the page
