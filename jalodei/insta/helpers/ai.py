@@ -13,7 +13,7 @@ def openai_analyze_comments(comments: List[InstagramComment], instagram_account_
     client = OpenAI()
     client.api_key = settings.OPENAI_API_KEY
 
-    prompt = (f"Analyze these comments given that they relate to a post from an instagram account for a "
+    prompt = (f"Analyze these comments "
               f" {instagram_account_type}: {[str(comment) for comment in comments]}")
 
     openai_response = client.chat.completions.create(

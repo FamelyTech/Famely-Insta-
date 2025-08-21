@@ -1,10 +1,2 @@
 describe the nature and genre for this Instagram post in two two-sentence
 paragraphs, each dedicated to a different aspect of the post.)
-First paragraph: Try to identify whether the post appears to be professional
-and strategically staged with the intent to promote something,
-professionally, or if the post appears to be an example of a
-personal post sharing a moment or experience from a person’s life.
-Second paragraph: describe the post and possible genres or
-psychological motivations behind the post.
-Discuss what the comments tell us about the nature of peoples’ reactions
-to the post.
